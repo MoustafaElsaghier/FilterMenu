@@ -100,6 +100,11 @@ public class FilterMenuLayout extends ViewGroup {
      * expand progress *
      */
     private float expandProgress = 0;
+
+    public FilterMenuDrawable getDrawable() {
+        return drawable;
+    }
+
     /**
      * the center drawable
      * TODO: add more drawable

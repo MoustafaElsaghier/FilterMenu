@@ -1,11 +1,10 @@
 package com.linroid.filtermenu.library;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
@@ -17,6 +16,16 @@ public class FilterMenuDrawable extends Drawable {
     private Paint paint;
     private IconState state = IconState.COLLAPSED;
     private int radius;
+
+    private Bitmap getMenuBitmap() {
+        return menuBitmap;
+    }
+
+    public void setMenuBitmap(Bitmap menuBitmap) {
+        this.menuBitmap = menuBitmap;
+    }
+
+    private Bitmap menuBitmap;
 
     private int lineWidth = 8;
     private float expandProgress = 0;
@@ -31,7 +40,8 @@ public class FilterMenuDrawable extends Drawable {
         paint.setStrokeWidth(lineWidth);
 
     }
-    public enum IconState{
+
+    public enum IconState {
         COLLAPSED,
         EXPANDED
     }
@@ -47,12 +57,12 @@ public class FilterMenuDrawable extends Drawable {
 
     @Override
     public int getIntrinsicWidth() {
-        return (int) (radius*0.8f);
+        return (int) (radius * 0.8f);
     }
 
     @Override
     public int getIntrinsicHeight() {
-        return (int) (radius*0.8f);
+        return (int) (radius * 0.8f);
     }
 
     @Override
@@ -61,46 +71,61 @@ public class FilterMenuDrawable extends Drawable {
 //        paint.setColor(Color.BLACK);
 //        canvas.drawRect(getBounds(), paint);
 //        paint.setColor(Color.WHITE);
-        if(expandProgress<=0.5f){
-            drawTopLine(canvas, expandProgress);
-            drawMiddleLine(canvas, expandProgress);
-            drawBottomLine(canvas, expandProgress);
-        // draw cancel
-        }else{
+        if (expandProgress <= 0.5f) {
+            if (menuBitmap == null) {
+
+                drawTopLine(canvas, expandProgress);
+                drawMiddleLine(canvas, expandProgress);
+                drawBottomLine(canvas, expandProgress);
+            } else {
+                drawBitmap(canvas);
+            }
+            // draw cancel
+        } else {
             drawTopLeftLine(canvas, expandProgress);
             drawBottomLeftLine(canvas, expandProgress);
         }
     }
 
+    private void drawBitmap(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+
+        canvas.drawBitmap(getMenuBitmap(), 0, 0, paint);
+    }
+
     private void drawBottomLeftLine(Canvas canvas, float progress) {
-        int ly = (int) (getBounds().bottom-getIntrinsicHeight()*progress);
-        int ry = (int) (getBounds().top+ getIntrinsicHeight()*progress);
+        int ly = (int) (getBounds().bottom - getIntrinsicHeight() * progress);
+        int ry = (int) (getBounds().top + getIntrinsicHeight() * progress);
         canvas.drawLine(getBounds().left, ly, getBounds().right, ry, paint);
     }
 
     private void drawTopLeftLine(Canvas canvas, float progress) {
-        int ry = (int) (getBounds().bottom-getIntrinsicHeight()*progress);
-        int ly = (int) (getBounds().top+ getIntrinsicHeight()*progress);
+        int ry = (int) (getBounds().bottom - getIntrinsicHeight() * progress);
+        int ly = (int) (getBounds().top + getIntrinsicHeight() * progress);
         canvas.drawLine(getBounds().left, ly, getBounds().right, ry, paint);
     }
 
 
     private void drawTopLine(Canvas canvas, float progress) {
-        int y = getBounds().top + (int) (getIntrinsicHeight()* progress) + lineWidth;
-        canvas.drawLine(getBounds().left, y, getBounds().left+getIntrinsicWidth(), y, paint);
+        int y = getBounds().top + (int) (getIntrinsicHeight() * progress) + lineWidth;
+        canvas.drawLine(getBounds().left, y, getBounds().left + getIntrinsicWidth(), y, paint);
     }
 
     private void drawMiddleLine(Canvas canvas, float progress) {
         int y = getBounds().top + getIntrinsicHeight() / 2;
-        int len = getIntrinsicWidth() /2;
+        int len = getIntrinsicWidth() / 2;
         int centerX = getBounds().centerX();
-        canvas.drawLine(centerX-len/2, y, centerX+len/2, y, paint);
+        canvas.drawLine(centerX - len / 2, y, centerX + len / 2, y, paint);
     }
+
     private void drawBottomLine(Canvas canvas, float progress) {
-        int y = getBounds().top + (int) (getIntrinsicHeight() * (1-progress)) - lineWidth;
-        int len = getIntrinsicWidth() /4;
+        int y = getBounds().top + (int) (getIntrinsicHeight() * (1 - progress)) - lineWidth;
+        int len = getIntrinsicWidth() / 4;
         int centerX = getBounds().centerX();
-        canvas.drawLine(centerX-len/2, y, centerX+len/2, y, paint);
+        canvas.drawLine(centerX - len / 2, y, centerX + len / 2, y, paint);
     }
 
     @Override

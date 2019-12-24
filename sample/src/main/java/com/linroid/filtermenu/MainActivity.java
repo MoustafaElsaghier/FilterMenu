@@ -2,12 +2,13 @@ package com.linroid.filtermenu;
 
 import android.content.Intent;
 import android.net.Uri;
-import androidx.appcompat.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.linroid.filtermenu.library.FilterMenu;
 import com.linroid.filtermenu.library.FilterMenuLayout;
@@ -15,22 +16,22 @@ import com.linroid.filtermenu.library.FilterMenuLayout;
 import hugo.weaving.DebugLog;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FilterMenuLayout layout1 = (FilterMenuLayout) findViewById(R.id.filter_menu1);
+        FilterMenuLayout layout1 = findViewById(R.id.filter_menu1);
         attachMenu1(layout1);
 
-        FilterMenuLayout layout2 = (FilterMenuLayout) findViewById(R.id.filter_menu2);
+        FilterMenuLayout layout2 = findViewById(R.id.filter_menu2);
         attachMenu2(layout2);
 
-        FilterMenuLayout layout3 = (FilterMenuLayout) findViewById(R.id.filter_menu3);
+        FilterMenuLayout layout3 = findViewById(R.id.filter_menu3);
         attachMenu3(layout3);
 
-        FilterMenuLayout layout4 = (FilterMenuLayout) findViewById(R.id.filter_menu4);
+        FilterMenuLayout layout4 = findViewById(R.id.filter_menu4);
         attachMenu4(layout4);
     }
     private FilterMenu attachMenu1(FilterMenuLayout layout){
